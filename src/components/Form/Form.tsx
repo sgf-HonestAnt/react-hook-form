@@ -1,25 +1,36 @@
-import { Button } from "@mui/material";
+import { Button, Input, TextField } from "@mui/material";
 import * as React from "react";
 import { useForm, Controller, UseControllerProps } from "react-hook-form";
 
-type defaultValuesProps = {
+// type ListOfMuiFormProps = TextFieldProps | InputProps | SelectProps;
+
+// export type MyComponentProps = Omit<ListOfMuiFormProps, "name"> & {
+//   as: JSX.Element;
+//   children?: React.ReactNode;
+//   // validation?: ControllerProps["rules"];
+//   // name: string;
+//   // parseError?: (error: FieldError) => string;
+//   control?: Control<any>;
+// };
+
+export type defaultValuesProps = {
   [key: string]: string;
 };
 
 type FieldProps = UseControllerProps & {
-  as: JSX.Element;
-  children?: React.ReactNode;
+  as: string; // JSX.Element;
+  // children?: JSX.Element;
 };
 
 type FormProps = {
   fields: FieldProps[];
+  defaultValues: defaultValuesProps;
 };
 
+// const MyComponent = ({ as }: MyComponentProps) => as;
+
 export function Form(props: FormProps) {
-  let defaultValues: defaultValuesProps = {};
-  props.fields.forEach(
-    (field) => (defaultValues[field.name] = field.defaultValue)
-  );
+  const { defaultValues } = props;
   const {
     control,
     //register,
@@ -28,36 +39,55 @@ export function Form(props: FormProps) {
   } = useForm({
     defaultValues,
   });
-  console.log(defaultValues);
+
+  console.log("defaultValues", defaultValues);
+
   const [formData, setFormData] = React.useState(defaultValues);
+
   function onSubmit(data: any) {
     setFormData(data);
     console.log(formData);
   }
 
-  console.log(errors);
+  console.log("errors", errors);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       style={{ display: "flex", flexDirection: "column" }}>
       {props.fields.map((field, index) => {
-        const { name, rules, as, children } = field;
-
-        const MyComponent = as;
-
+        const { name, rules, as } = field;
         return (
           <Controller
             key={index}
             name={name}
             control={control}
             rules={rules}
-            render={({ field }) => (
-              <MyComponent {...field}>{children ?? null}</MyComponent>
-            )}
+            render={({ field }) => {
+              return as === "TextField" ? (
+                <TextField {...field} />
+              ) : (
+                // onChange ?
+                // {errors.aboutYou?.message ?? null}
+                <Input {...field} />
+                // onChange ?
+                // {errors.aboutYou?.message ?? null}
+              );
+            }}
           />
         );
       })}
+      {/* <Controller
+        name='aboutYou'
+        control={control}
+        rules={{ required: "About you is required", minLength: 4 }}
+        render={({ field }) => (
+          <>
+            <TextField {...field} />
+            {errors.aboutYou?.message ?? null}
+          </>
+        )}
+      /> */}
       <Button variant='contained' type='submit'>
         Submit
       </Button>
