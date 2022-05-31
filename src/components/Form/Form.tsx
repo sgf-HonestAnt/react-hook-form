@@ -1,99 +1,74 @@
-import { Button, Input, TextField } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import styled from "styled-components";
 import * as React from "react";
-import { useForm, Controller, UseControllerProps } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import GenericController from "./Controller";
+import { FormField, FormFieldsComponentProps } from "./types";
 
-// type ListOfMuiFormProps = TextFieldProps | InputProps | SelectProps;
+function getDefaultValues(fields: FormField[]) {
+  let defaultValues: { [key: string]: string } = {};
+  fields.forEach((field) => (defaultValues[field.id] = field.defaultValue));
+  return defaultValues;
+}
 
-// export type MyComponentProps = Omit<ListOfMuiFormProps, "name"> & {
-//   as: JSX.Element;
-//   children?: React.ReactNode;
-//   // validation?: ControllerProps["rules"];
-//   // name: string;
-//   // parseError?: (error: FieldError) => string;
-//   control?: Control<any>;
-// };
+export const Form: React.FC<FormFieldsComponentProps> = (props) => {
+  const defaultValues = getDefaultValues(props.fields);
 
-export type defaultValuesProps = {
-  [key: string]: string;
-};
-
-type FieldProps = UseControllerProps & {
-  as: string; // JSX.Element;
-  // children?: JSX.Element;
-};
-
-type FormProps = {
-  fields: FieldProps[];
-  defaultValues: defaultValuesProps;
-};
-
-// const MyComponent = ({ as }: MyComponentProps) => as;
-
-export function Form(props: FormProps) {
-  const { defaultValues } = props;
+  // initialize form
   const {
     control,
-    //register,
-    formState: { errors },
+    // formState: { errors },
     handleSubmit,
+    watch,
   } = useForm({
     defaultValues,
   });
 
-  console.log("defaultValues", defaultValues);
-
-  const [formData, setFormData] = React.useState(defaultValues);
-
+  // onSubmit
   function onSubmit(data: any) {
-    setFormData(data);
-    console.log(formData);
+    console.log("data on Submit", data);
   }
 
-  console.log("errors", errors);
+  React.useEffect(() => {
+    // watch values
+    const subscription = watch();
+    console.log(new Date(), subscription);
+  }, [watch]);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      style={{ display: "flex", flexDirection: "column" }}>
-      {props.fields.map((field, index) => {
-        const { name, rules, as } = field;
-        return (
-          <Controller
-            key={index}
-            name={name}
-            control={control}
-            rules={rules}
-            render={({ field }) => {
-              return as === "TextField" ? (
-                <TextField {...field} />
-              ) : (
-                // onChange ?
-                // {errors.aboutYou?.message ?? null}
-                <Input {...field} />
-                // onChange ?
-                // {errors.aboutYou?.message ?? null}
-              );
-            }}
-          />
-        );
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+      {props.fields.map((field, idx) => {
+        return <GenericController key={idx} field={field} control={control} />;
       })}
-      {/* <Controller
-        name='aboutYou'
-        control={control}
-        rules={{ required: "About you is required", minLength: 4 }}
-        render={({ field }) => (
-          <>
-            <TextField {...field} />
-            {errors.aboutYou?.message ?? null}
-          </>
-        )}
-      /> */}
-      <Button variant='contained' type='submit'>
-        Submit
-      </Button>
-    </form>
+
+      {/* buttons */}
+      <Box sx={{ padding: "5px 0" }}>
+        {["reset", "submit"].map((type, idx) => (
+          <Button
+            key={idx}
+            variant='contained'
+            type={type === "reset" ? "reset" : "submit"}
+            sx={{ margin: "2px" }}>
+            {type}
+          </Button>
+        ))}
+      </Box>
+    </StyledForm>
   );
-}
+};
+
+// {/* <Controller
+//   name='aboutYou'
+//   control={control}
+//   rules={{ required: "About you is required", minLength: 4 }}
+//   render={({ field }) => (
+//     <>
+//       <TextField {...field} />
+//       {errors.aboutYou?.message ?? null}
+//     </>
+//   )}
+// /> */}
+// {/* {JSON.stringify(formData)} */}
 
 // {/* {errors[name]?.message ?? null} */}
 // <br />
@@ -124,3 +99,8 @@ export function Form(props: FormProps) {
 //   )}
 // />
 // <br />
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
