@@ -26,7 +26,7 @@ export const Form: React.FC<FormFieldsComponentProps> = (props) => {
 
   // onSubmit
   function onSubmit(data: any) {
-    console.log("data on Submit", data);
+    alert(JSON.stringify(data));
   }
 
   React.useEffect(() => {

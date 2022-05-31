@@ -56,6 +56,20 @@ const FormFields: any = [
     config: {},
   },
   {
+    id: "howGreatIsThatCocoa",
+    label: "How great is that cocoa?",
+    defaultValue: "Good",
+    options: [
+      { value: "Amazing", copy: "Amazing" },
+      { value: "Good", copy: "Good" },
+      { value: "Meh", copy: "Meh" },
+      { value: "Bad", copy: "Bad" },
+    ],
+    rules: {},
+    type: FormFieldTypes.SELECT,
+    config: {},
+  },
+  {
     id: "howGreatIsThatCoffee",
     label: "How great is that coffee?",
     defaultValue: "Amazing",
@@ -70,11 +84,48 @@ const FormFields: any = [
     typeVariant: InputTypeVariants.OUTLINED,
     config: {},
   },
+  {
+    id: "howGreatIsThatTea",
+    label: "How great is that tea?",
+    defaultValue: "Bad",
+    options: [
+      { value: "Amazing", copy: "Amazing" },
+      { value: "Good", copy: "Good" },
+      { value: "Meh", copy: "Meh" },
+      { value: "Bad", copy: "Bad" },
+    ],
+    rules: {},
+    type: FormFieldTypes.SELECT,
+    typeVariant: InputTypeVariants.FILLED,
+    config: {},
+  },
+  {
+    id: "dogsOrCats",
+    label: "Dogs or Cats?",
+    defaultValue: "Dogs",
+    buttons: [
+      {
+        label: "Dogs",
+        value: "DOGS",
+      },
+      {
+        label: "Cats",
+        value: "CATS",
+      },
+      {
+        label: "Goldfish",
+        value: "GODLFISH",
+      },
+    ],
+    rules: {},
+    type: FormFieldTypes.RADIO,
+    config: {},
+  },
 ];
 
 function App() {
   return (
-    <Container sx={{ paddingTop: "10vh", height: "100vh", bgcolor: "pink" }}>
+    <Container sx={{ padding: "3vh 0", overflow: "scroll" }}>
       <Box sx={{ maxWidth: "500px", margin: "auto" }}>
         <Form fields={FormFields} />
       </Box>

@@ -1,15 +1,22 @@
-import { SelectProps, TextFieldProps } from "@mui/material";
+// @tom (FABRIC) https://github.dev/biglemonco/fabric/blob/main/frontend/src/components/FormFieldsComponent/FormFieldsComponent.tsx
+
 import {
-  //Control,
-  RegisterOptions,
-} from "react-hook-form";
+  SelectProps,
+  TextFieldProps,
+  ToggleButtonGroupProps,
+  ToggleButtonProps,
+} from "@mui/material";
+import { RegisterOptions } from "react-hook-form";
+
+export type Button = ToggleButtonProps & {
+  label: string;
+};
 
 export type FormFieldsComponentProps = {
   fields: FormField[];
-  // control: Control;
-}; // @tom (FABRIC)
+};
 
-export type FormField = InputField | SelectField;
+export type FormField = InputField | SelectField | RadioField;
 
 export enum FormFieldTypes {
   INPUT = "input",
@@ -21,7 +28,7 @@ export enum FormFieldTypes {
   LOCATION = "location",
   CHECKBOX = "checkbox",
   CUSTOM = "custom",
-} // @tom (FABRIC)
+}
 
 export enum InputTypeVariants {
   FILLED = "filled",
@@ -41,7 +48,6 @@ export type InputField = FormFieldBase & {
   typeVariant: InputTypeVariants;
   multiline: boolean;
   rows: number;
-  maxRows: number;
   config: Omit<TextFieldProps, "error" | "helperText" | "value" | "required">;
 };
 
@@ -50,10 +56,23 @@ export type SelectField = FormFieldBase & {
   typeVariant: InputTypeVariants;
   multiline: boolean;
   rows: number;
-  maxRows: number;
   options: Option[];
   config: Omit<SelectProps, "value" | "required">;
 };
+
+export type RadioButtonComponentProps = {
+  buttons: Button[];
+  label: string;
+  // validation: RegisterOptions;
+  // error?: any;
+  // formField?: any;
+  config: Omit<ToggleButtonGroupProps, "value" | "required">;
+};
+
+export type RadioField = FormFieldBase &
+  RadioButtonComponentProps & {
+    type: FormFieldTypes.RADIO;
+  };
 
 export type Option = {
   value: string | number | readonly string[] | undefined;

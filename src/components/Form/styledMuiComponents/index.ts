@@ -9,21 +9,17 @@ import {
 } from "@mui/material";
 
 export const FormControl = styled(MuiFormControl)`
-  margin: 10px;
+  margin: 10px 0;
 `;
 
 export const InputLabel = styled(MuiInputLabel)``;
 
-export const Input = styled(MuiInput)`
-  margin: 10px;
-`;
+export const Input = styled(MuiInput)``;
 
 export const TextField = styled(MuiTextField)`
-  margin: 10px;
+  margin: 10px 0;
 `;
 
 export const Select = styled(MuiSelect)``;
 
-export const MenuItem = styled(MuiMenuItem)`
-  margin: 10px;
-`;
+export const MenuItem = styled(MuiMenuItem)``;

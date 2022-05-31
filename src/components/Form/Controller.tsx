@@ -1,4 +1,5 @@
 import { Control, Controller } from "react-hook-form";
+import RadioButtonsComponent from "./RadioButtons";
 import {
   FormControl,
   InputLabel,
@@ -15,6 +16,14 @@ type Props = {
 
 function GenericController({ field, control }: Props) {
   const label = `${field.label}`;
+  const variant =
+    field.type !== FormFieldTypes.RADIO
+      ? field.typeVariant ?? "standard"
+      : undefined;
+  const rows =
+    field.type !== FormFieldTypes.RADIO ? field.rows ?? 1 : undefined;
+  const multiline =
+    field.type !== FormFieldTypes.RADIO ? field.multiline ?? false : undefined;
   switch (field.type) {
     case FormFieldTypes.INPUT:
       return (
@@ -24,7 +33,16 @@ function GenericController({ field, control }: Props) {
           rules={field.rules}
           defaultValue={field.defaultValue ?? ""}
           render={({ field: { ref, ...field } }) => {
-            return <TextField inputRef={ref} label={label} {...field} />;
+            return (
+              <TextField
+                variant={variant}
+                inputRef={ref}
+                label={label}
+                rows={rows}
+                multiline={multiline}
+                {...field}
+              />
+            );
           }}
         />
       );
@@ -38,22 +56,48 @@ function GenericController({ field, control }: Props) {
           defaultValue={field.defaultValue ?? ""}
           render={({ field: { ref, ...field } }) => {
             return (
-              <FormControl>
+              <>
                 <InputLabel>{label}</InputLabel>
-                <Select inputRef={ref} {...field}>
-                  {options?.map((option: Option, idx: number) => {
-                    return (
-                      <MenuItem
-                        key={`form-field-option-${idx + 1}`}
-                        value={option.value}>
-                        {option.copy}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
+                <FormControl>
+                  <Select
+                    variant={variant}
+                    inputRef={ref}
+                    rows={rows}
+                    multiline={multiline}
+                    {...field}>
+                    {options?.map((option: Option, idx: number) => {
+                      return (
+                        <MenuItem
+                          key={`form-field-option-${idx + 1}`}
+                          value={option.value}>
+                          {option.copy}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </>
             );
           }}
+        />
+      );
+    case FormFieldTypes.RADIO:
+      const buttons = field.buttons;
+      const config = field.config;
+      return (
+        <Controller
+          name={field.id}
+          control={control}
+          rules={field.rules}
+          defaultValue={field.defaultValue ?? ""}
+          render={({ field: { ref, ...field } }) => (
+            <RadioButtonsComponent
+              {...field}
+              label={label}
+              buttons={buttons}
+              config={config}
+            />
+          )}
         />
       );
   }
