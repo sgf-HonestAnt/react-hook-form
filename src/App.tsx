@@ -1,5 +1,5 @@
 import { Box, Container } from "@mui/material";
-import { Form } from "./components/Form";
+import FormComponent from "./components/Form";
 import { FormFieldTypes, InputTypeVariants } from "./components/Form/types";
 
 const FormFields: any = [
@@ -127,7 +127,7 @@ function App() {
   return (
     <Container sx={{ padding: "3vh 0", overflow: "scroll" }}>
       <Box sx={{ maxWidth: "500px", margin: "auto" }}>
-        <Form fields={FormFields} />
+        <FormComponent fields={FormFields} />
       </Box>
     </Container>
   );

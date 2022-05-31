@@ -11,7 +11,7 @@ function getDefaultValues(fields: FormField[]) {
   return defaultValues;
 }
 
-export const Form: React.FC<FormFieldsComponentProps> = (props) => {
+const FormComponent: React.FC<FormFieldsComponentProps> = (props) => {
   const defaultValues = getDefaultValues(props.fields);
 
   // initialize form
@@ -36,7 +36,7 @@ export const Form: React.FC<FormFieldsComponentProps> = (props) => {
   }, [watch]);
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       {props.fields.map((field, idx) => {
         return <GenericController key={idx} field={field} control={control} />;
       })}
@@ -53,54 +53,13 @@ export const Form: React.FC<FormFieldsComponentProps> = (props) => {
           </Button>
         ))}
       </Box>
-    </StyledForm>
+    </Form>
   );
 };
 
-// {/* <Controller
-//   name='aboutYou'
-//   control={control}
-//   rules={{ required: "About you is required", minLength: 4 }}
-//   render={({ field }) => (
-//     <>
-//       <TextField {...field} />
-//       {errors.aboutYou?.message ?? null}
-//     </>
-//   )}
-// /> */}
-// {/* {JSON.stringify(formData)} */}
+export default FormComponent;
 
-// {/* {errors[name]?.message ?? null} */}
-// <br />
-// <Controller
-//   name='category'
-//   control={control}
-//   rules={{ required: "Category is required" }}
-//   render={({ field }) => (
-//     <>
-//       <Select {...field}>
-//         <MenuItem value='A'>Option A</MenuItem>
-//         <MenuItem value='B'>Option B</MenuItem>
-//       </Select>
-//       {errors.category?.message ?? null}
-//     </>
-//   )}
-// />
-// <br />
-// <Controller
-//   name='aboutYou'
-//   control={control}
-//   rules={{ required: "About you is required", minLength: 4 }}
-//   render={({ field }) => (
-//     <>
-//       <TextField {...field} />
-//       {errors.aboutYou?.message ?? null}
-//     </>
-//   )}
-// />
-// <br />
-
-const StyledForm = styled.form`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;

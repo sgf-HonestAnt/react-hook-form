@@ -1,3 +1,4 @@
+import { Box as MuiBox, styled } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
 import RadioButtonsComponent from "./RadioButtons";
 import {
@@ -34,14 +35,16 @@ function GenericController({ field, control }: Props) {
           defaultValue={field.defaultValue ?? ""}
           render={({ field: { ref, ...field } }) => {
             return (
-              <TextField
-                variant={variant}
-                inputRef={ref}
-                label={label}
-                rows={rows}
-                multiline={multiline}
-                {...field}
-              />
+              <Box>
+                <TextField
+                  variant={variant}
+                  inputRef={ref}
+                  label={label}
+                  rows={rows}
+                  multiline={multiline}
+                  {...field}
+                />
+              </Box>
             );
           }}
         />
@@ -56,7 +59,7 @@ function GenericController({ field, control }: Props) {
           defaultValue={field.defaultValue ?? ""}
           render={({ field: { ref, ...field } }) => {
             return (
-              <>
+              <Box>
                 <InputLabel>{label}</InputLabel>
                 <FormControl>
                   <Select
@@ -76,7 +79,7 @@ function GenericController({ field, control }: Props) {
                     })}
                   </Select>
                 </FormControl>
-              </>
+              </Box>
             );
           }}
         />
@@ -91,12 +94,14 @@ function GenericController({ field, control }: Props) {
           rules={field.rules}
           defaultValue={field.defaultValue ?? ""}
           render={({ field: { ref, ...field } }) => (
-            <RadioButtonsComponent
-              {...field}
-              label={label}
-              buttons={buttons}
-              config={config}
-            />
+            <Box>
+              <RadioButtonsComponent
+                {...field}
+                label={label}
+                buttons={buttons}
+                config={config}
+              />
+            </Box>
           )}
         />
       );
@@ -104,3 +109,8 @@ function GenericController({ field, control }: Props) {
 }
 
 export default GenericController;
+
+const Box = styled(MuiBox)`
+  margin: 10px 0;
+  width: 100%;
+`;
